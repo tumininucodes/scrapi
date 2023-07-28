@@ -14,15 +14,23 @@ type Product struct {
 
 func main() {
 	c := colly.NewCollector(
-		colly.AllowedDomains("jumia.com.ng"),
+		colly.AllowedDomains("www.jumia.com.ng"),
 	)
 
-	fmt.Println("about to")
+	var products []Product
 
 	c.OnHTML("a.core", func(h *colly.HTMLElement) {
-		fmt.Println("=======")
-		fmt.Println(h.Text)
+		product := Product{
+			Name: h.ChildText("div.name"),
+			Price: h.ChildText("div.prc"),
+			ImageUrl: h.ChildAttr("img", "data-src"),
+		}
+		products = append(products, product)
 	})
-
+	
 	c.Visit("https://www.jumia.com.ng")
+	fmt.Println(products)
+
+
+	
 }
