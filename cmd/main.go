@@ -1,7 +1,8 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
+	"os"
 
 	"github.com/gocolly/colly"
 )
@@ -29,8 +30,14 @@ func main() {
 	})
 	
 	c.Visit("https://www.jumia.com.ng")
-	fmt.Println(products)
-
-
 	
+
+
+	content, err := json.Marshal(products)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	os.WriteFile("content.json", content, 0644)
+
 }
